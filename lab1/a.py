@@ -108,7 +108,44 @@ print("hello" not in a)
 if "mul" not in a:
     print("No, 'mul' is NOT present")
 
+# strings - slicing
+b = "Hello, World!"
+print(b[2:5])
+print(b[:5])
+print(b[2:])
+print(b[-5:-2])
 
+# string - modify
+print(a.lower())
+print(a.strip())
+print(a.replace("H", "J"))
+print(a.split(","))
 
+# string concatenation
+a = "Hello"
+b = "World"
+c = a + b
+d = a + " " + b
+print(c)
+print(d)
 
+# string format
+age = 36
+txt = "My name is John, and I am {}"
+print(txt.format(age))
+quantity = 3
+itemno = 567
+price = 49.95
+my_order = "I want to pay {2} dollars for {0} pieces of item{1}"
+print(my_order.format(quantity, itemno, price))
 
+# string escape characters
+txt = "We are so-called \"humans\" from the west"
+print(txt)
+
+# string methods
+print(txt.capitalize())
+
+# exercises
+x = "Hello World"
+print(len(x))
