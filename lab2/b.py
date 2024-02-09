@@ -187,3 +187,98 @@ print(z.count("hi"))
 # exercises
 fruits = ("apple", "banana", "cherry")
 print(fruits)  # ("apple", "banana", "cherry")
+
+# sets
+myset = {"apple", "banana", "cherry"}
+print(myset)
+
+for x in myset:
+    print(x)
+
+myset.add("orange")
+
+tropical = {"pineapple", "mango", "papaya"}
+myset.update(tropical)
+
+myset.remove("pineapple")  # you can use set.discard(), it's not causing the error
+
+tropical.pop()
+tropical.clear()
+myset3 = myset.union(tropical)
+
+# exercises
+fruits = {"apple", "banana", "cherry"}
+if "apple" in fruits:
+    print("yes, it's there")
+
+
+# dictionaries
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+
+print(thisdict)
+print(thisdict["brand"])
+print(len(thisdict))
+x = thisdict.keys()
+z = thisdict.values()
+print(x, "\n", z)
+thisdict["color"] = "red"
+print(x)
+thisdict["year"] = 2000
+print(z)
+thisdict.pop("model")
+print(thisdict)
+thisdict.popitem()
+print(thisdict)
+for x in thisdict.items():
+    print(x)
+
+# nested dictionaries
+myfamily = {
+  "child1" : {
+    "name" : "Emil",
+    "year" : 2004
+  },
+  "child2" : {
+    "name" : "Tobias",
+    "year" : 2007
+  },
+  "child3" : {
+    "name" : "Linus",
+    "year" : 2011
+  }
+}
+thisdict["model"] = "Meow"
+
+# exercises
+print(thisdict.get("model"))
+
+# if...else
+a = 200
+b = 33
+if b > a:
+    print("b is greater than a")
+elif a == b:
+    print("a and b are equal")
+else:
+    print("a is greater than b")
+
+# while loops
+i = 1
+while i < 6:
+    print(i)
+    if i == 3:
+        break
+    i += 1
+
+# for loop
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+    print(x)
+    if x == "banana":
+        break
+
+
