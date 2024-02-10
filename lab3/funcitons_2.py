@@ -117,3 +117,4 @@ print(f"Average IMDB score for all movies: {average_score_all}")
 
 average_score_romance = average_imdb_score_by_category(movies, "Romance")
 print(f"Average IMDB score for Romance movies: {average_score_romance}")
+
