@@ -8,16 +8,15 @@ interfaces = data.get("imdata", [])
 
 print("Interface status")
 print("=" * 80)
-print("{:<50} {:<20} {:<10} {:<6}".format("dot1", "Description", "autoNeg", "bw"))
+print("{:<50} {:<20} {:<10} {:<6}".format("DN", "Description", "Speed", "MTU"))
 print("-" * 80)
 
 for interface in interfaces:
-    attributes = interface.get('l1PhysIf', {}).get('attributes', {})
-    dot1 = attributes.get('dot1qEtherType')
-    description = attributes.get('descr', '')
-    autoNeg = attributes.get('autoNeg')
-    bw = attributes.get('bw')
+    dn = interface.get('l1PhysIf', {}).get('attributes', {}).get('dn', '')
+    description = interface.get('l1PhysIf', {}).get('attributes', {}).get('descr', '')
+    speed = interface.get('l1PhysIf', {}).get('attributes', {}).get('speed', 'inherit')
+    mtu = interface.get('l1PhysIf', {}).get('attributes', {}).get('mtu', '9150')
 
-    print("{:<50} {:<20} {:<10} {:<6}".format(dot1, description, autoNeg, bw))
+    print("{:<50} {:<20} {:<8} {:<6}".format(dn, description, speed, mtu))
 
 
