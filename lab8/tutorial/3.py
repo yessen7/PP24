@@ -62,12 +62,15 @@ class Coin(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("coin.png")
         self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(0, SCREEN_WIDTH), random.randint(300, SCREEN_HEIGHT))
+        self.spawn()
 
-    #def appear(self):
-    #    global COIN_SCORE
-    #    if self.rect.colliderect(P1):
-    #        COIN_SCORE += 1
+    def spawn(self):
+        self.rect.center = (random.randint(0, SCREEN_WIDTH), random.randint(0, 300))
+
+    def move(self):
+        self.rect.move_ip(0, 5)
+        if self.rect.top > SCREEN_HEIGHT:
+            self.spawn()
 
 
 class Player(pygame.sprite.Sprite):
@@ -99,6 +102,7 @@ C1 = Coin()
 # Creating Sprites Groups
 enemies = pygame.sprite.Group()
 enemies.add(E1)
+
 all_sprites = pygame.sprite.Group()
 all_sprites.add(E1)
 all_sprites.add(P1)
@@ -133,6 +137,10 @@ while not done:
 
     for entity in coins:
         screen.blit(entity.image, entity.rect)
+        entity.move()
+
+    #for entity in coins:
+        #screen.blit(entity.image, entity.rect)
         #entity.appear()
 
     # To be run if collision occurs between Player and Enemy
@@ -155,15 +163,13 @@ while not done:
         pygame.mixer.Sound('crash.wav').play()
         COIN_SCORE += 1
 
-        pygame.display.update()
         for entity in coins:
             entity.kill()
 
+        if not coins:
+            print("added new objects to COINS")
+            new_coin = Coin()
+            coins.add(new_coin)
 
     FramePerSec.tick(FPS)
     pygame.display.update()
-
-    # print(object1.colliderect(object2))
-    # print(object1.collidepoint(50, 75))
-
-
