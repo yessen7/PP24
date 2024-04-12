@@ -1,0 +1,169 @@
+import pygame
+import sys
+import random
+import time
+import math
+from pygame.locals import *
+
+# Initializing
+pygame.init()
+
+# Basic settings
+SCREEN_WIDTH = 400
+SCREEN_HEIGHT = 600
+FPS = 60
+SPEED = 5
+SCORE = 0
+COIN_SCORE = 0
+
+# Predefined some colors
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+PINK = (255, 192, 203)
+
+# Setting up Fonts
+font = pygame.font.SysFont("Verdana", 60)
+font_small = pygame.font.SysFont("Verdana", 20)
+font_coins = pygame.font.SysFont("Verdana", 300)
+game_over = font.render("Game Over", True, BLACK)
+
+background = pygame.image.load("AnimatedStreet.png")
+
+# Create a pink screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen.fill(PINK)
+pygame.display.set_caption("Racer")
+
+FramePerSec = pygame.time.Clock()
+done = False
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("Enemy.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0)
+
+    def move(self):
+        global SCORE
+        self.rect.move_ip(0, SPEED)
+        if self.rect.top > 600:
+            SCORE += 1
+            self.rect.top = 0
+            self.rect.center = (random.randint(30, 370), 0)
+
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("coin.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (random.randint(0, SCREEN_WIDTH), random.randint(300, SCREEN_HEIGHT))
+
+    #def appear(self):
+    #    global COIN_SCORE
+    #    if self.rect.colliderect(P1):
+    #        COIN_SCORE += 1
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("Player.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (160, 520)
+
+    def move(self):
+        pressed_keys = pygame.key.get_pressed()
+        if self.rect.left > 0:
+            if pressed_keys[pygame.K_a]:
+                self.rect.move_ip(-10, 0)
+        if self.rect.right < SCREEN_WIDTH:
+            if pressed_keys[pygame.K_d]:
+                self.rect.move_ip(10, 0)
+        if pressed_keys[pygame.K_w] and self.rect.top > 0:
+            self.rect.move_ip(0, -10)
+        if pressed_keys[pygame.K_s] and self.rect.bottom < SCREEN_HEIGHT:
+            self.rect.move_ip(0, 10)
+
+
+# Setting up Sprites
+P1 = Player()
+E1 = Enemy()
+C1 = Coin()
+
+# Creating Sprites Groups
+enemies = pygame.sprite.Group()
+enemies.add(E1)
+all_sprites = pygame.sprite.Group()
+all_sprites.add(E1)
+all_sprites.add(P1)
+
+coins = pygame.sprite.Group()
+coins.add(C1)
+
+# Adding a new User event
+INC_SPEED = pygame.USEREVENT + 1
+pygame.time.set_timer(INC_SPEED, 1000)
+
+# Game Loop
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+            pygame.quit()
+            sys.exit()
+        if event.type == INC_SPEED:
+            SPEED += 1
+
+    screen.blit(background, (0, 0))
+    scores = font_small.render(str(SCORE), True, BLACK)
+    coin_scores = font_small.render(str(COIN_SCORE), True, BLACK)
+    screen.blit(scores, (10, 10))
+    screen.blit(coin_scores, (360, 10))
+
+    # Moves and Re-draws all Sprites
+    for entity in all_sprites:
+        screen.blit(entity.image, entity.rect)
+        entity.move()
+
+    for entity in coins:
+        screen.blit(entity.image, entity.rect)
+        #entity.appear()
+
+    # To be run if collision occurs between Player and Enemy
+    if pygame.sprite.spritecollideany(P1, enemies):
+        pygame.mixer.Sound('crash.wav').play()
+        time.sleep(0.5)
+
+        screen.fill((255, 52, 25))
+        screen.blit(game_over, (30, 250))
+
+        pygame.display.update()
+        for entity in all_sprites:
+            entity.kill()
+        time.sleep(2)
+        pygame.quit()
+        sys.exit()
+
+    # To be run if collision occurs between Player and Coin
+    if pygame.sprite.spritecollideany(P1, coins):
+        pygame.mixer.Sound('crash.wav').play()
+        COIN_SCORE += 1
+
+        pygame.display.update()
+        for entity in coins:
+            entity.kill()
+
+
+    FramePerSec.tick(FPS)
+    pygame.display.update()
+
+    # print(object1.colliderect(object2))
+    # print(object1.collidepoint(50, 75))
+
+

@@ -27,13 +27,13 @@ while not done:
     pressed = pygame.key.get_pressed()
     drawStyleRect(screen)
 
-    if pressed[pygame.K_UP] and y > 35:
+    if pressed[pygame.K_w] and y > 35:
         y -= 10
-    if pressed[pygame.K_DOWN] and y < HEIGHT-35:
+    if pressed[pygame.K_s] and y < HEIGHT-35:
         y += 10
-    if pressed[pygame.K_LEFT] and x > 35:
+    if pressed[pygame.K_a] and x > 35:
         x -= 10
-    if pressed[pygame.K_RIGHT] and x < WIDTH-35:
+    if pressed[pygame.K_d] and x < WIDTH-35:
         x += 10
 
 
@@ -48,8 +48,7 @@ while not done:
     pygame.draw.line(screen, (0, 255, 0), (WIDTH, HEIGHT), (WIDTH, 0), 7)
     pygame.draw.line(screen, (0, 255, 0), (WIDTH, 0), (0, 0), 5)
 
-
     pygame.draw.circle(screen, color, (x, y), 30)
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(60)
 
