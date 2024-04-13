@@ -1,14 +1,10 @@
 import pygame
 import math
-
 pygame.init()
-
 WIDTH = 800
 HEIGHT = 600
-
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 base_layer = pygame.Surface((WIDTH, HEIGHT))
-
 colorWHITE = (255, 255, 255)
 colorGRAY = (200, 200, 200)
 colorBLACK = (0, 0, 0)
@@ -16,17 +12,18 @@ colorRED = (255, 0, 0)
 colorGREEN = (0, 255, 0)
 colorBLUE = (0, 0, 255)
 colorYELLOW = (255, 255, 0)
-
 clock = pygame.time.Clock()
-
 LMBpressed = False
+RMBpressed = False
 THICKNESS = 5
-
 currX = 0
 currY = 0
-
 prevX = 0
 prevY = 0
+
+
+def erase_figure(position):
+    pygame.draw.circle(screen, colorBLACK, position, 25)
 
 
 def calculate_rect(x1, y1, x2, y2):
@@ -46,7 +43,6 @@ def calculate_right_triangle(x1, y1, x2, y2):
         zy = max(y1, y2)
     elif y2 < y1:
         zy = min(y1, y2)
-    print(zx, zy)
     return (x1, y1), (x2, y2), (zx, zy)
 
 
@@ -74,15 +70,8 @@ def calculate_rhombus(x1, y1, x2, y2):
         zy = y1 + (abs(y2 - y1))/2
     elif y2 < y1:
         zy = y1 - (abs(y2 - y1))/2
-
     return (zx, y1), (x1, zy), (zx, y2), (x2, zy)
 
-
-figure_dict = {
-    pygame.K_0: ""
-
-
-}
 
 desired_color = colorWHITE
 desired_figure = "rect"
@@ -93,6 +82,11 @@ while not done:
     for event in pygame.event.get():
         if LMBpressed:
             screen.blit(base_layer, (0, 0))
+
+        if RMBpressed:
+            erase_figure(event.pos)
+
+
         if event.type == pygame.QUIT:
             done = True
 
@@ -120,12 +114,14 @@ while not done:
             elif event.key == pygame.K_5:
                 desired_figure = "circle"
 
-
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             print("LMB pressed!")
             LMBpressed = True
             prevX = event.pos[0]
             prevY = event.pos[1]
+
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+            RMBpressed = True
 
         if event.type == pygame.MOUSEMOTION:
             print("Position of the mouse:", event.pos)
@@ -139,33 +135,40 @@ while not done:
                     case "square":
                         pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
                     case "rhombus":
-                        pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
+                        pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY),
+                                            THICKNESS)
                     case "right_triangle":
-                        pygame.draw.polygon(screen, desired_color, calculate_right_triangle(prevX, prevY, currX, currY), THICKNESS)
+                        pygame.draw.polygon(screen, desired_color, calculate_right_triangle(prevX, prevY, currX, currY),
+                                            THICKNESS)
                     case "equ_triangle":
-                        pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
+                        pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY),
+                                            THICKNESS)
                     case "circle":
                         pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY),
-                                           abs(currX - prevX),THICKNESS)
+                                           abs(currX - prevX), THICKNESS)
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             print("LMB released!")
             LMBpressed = False
             currX = event.pos[0]
             currY = event.pos[1]
+            RMBpressed = False
+
             match desired_figure:
                 case "rect":
                     pygame.draw.rect(screen, colorRED, calculate_rect(prevX, prevY, currX, currY), THICKNESS)
                 case "square":
-                    pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
+                    pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY),
+                                        THICKNESS)
                 case "rhombus":
-                    pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
+                    pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY),
+                                        THICKNESS)
                 case "right_triangle":
-                    pygame.draw.polygon(screen, desired_color, calculate_right_triangle(prevX, prevY, currX, currY),
-                                        THICKNESS)
+                    pygame.draw.polygon(screen, desired_color,
+                                        calculate_right_triangle(prevX, prevY, currX, currY), THICKNESS)
                 case "equ_triangle":
-                    pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY),
-                                        THICKNESS)
+                    pygame.draw.polygon(screen, desired_color,
+                                        calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
                 case "circle":
                     pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY),
                                        abs(currX - prevX), THICKNESS)
