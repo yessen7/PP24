@@ -36,8 +36,12 @@ FramePerSec = pygame.time.Clock()
 snake_pos = [100, 50]
 snake_body = [[100, 50], [100-10, 50], [100-(2*10), 50]]
 
+foods = [{"weight": 1, "color": white}, {"weight": 2, "color": blue}, {"weight": 3, "color": red}]
+
+food = random.choice(foods)
 food_pos = [random.randrange(1, (SCREEN_WIDTH//10)) * 10, random.randrange(1, (SCREEN_HEIGHT//10)) * 10]
 food_spawn = True
+food_spawn_time = time.time()
 
 direction = 'RIGHT'
 change_to = direction
@@ -75,6 +79,7 @@ def show_score(choice, color, font, size):
 
 # Main logic
 while True:
+    current_time = time.time()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -114,13 +119,23 @@ while True:
     if direction == 'RIGHT':
         snake_pos[0] += 10
 
+    weight = food.get("weight")
+    food_color = food.get("color")
+
+
     # Snake body growing mechanism
     snake_body.insert(0, list(snake_pos))
     if snake_pos[0] == food_pos[0] and snake_pos[1] == food_pos[1]:
-        score += 1
+        score += weight
         food_spawn = False
     else:
         snake_body.pop()
+
+    if current_time - food_spawn_time >= 10:
+        food = random.choice(foods)
+        food_pos = [random.randrange(1, (SCREEN_HEIGHT // 10)) * 10, random.randrange(1, (SCREEN_HEIGHT // 10)) * 10]
+        food_spawn_time = current_time
+
 
     # Spawning food on the screen
     if not food_spawn:
@@ -136,7 +151,7 @@ while True:
         pygame.draw.rect(surface, green, pygame.Rect(pos[0], pos[1], 10, 10))
 
     # Snake food
-    pygame.draw.rect(surface, white, pygame.Rect(food_pos[0], food_pos[1], 10, 10))
+    pygame.draw.rect(surface, food_color, pygame.Rect(food_pos[0], food_pos[1], 10, 10))
 
     # Game Over conditions
     # Getting out of bounds
