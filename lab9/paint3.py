@@ -47,6 +47,10 @@ def calculate_square(x1, y1, x2, y2):
         return pygame.Rect(min(x1, x2), min(y1, y2), abs(x1 - x2), abs(x1 - x2))
 
 
+def calculate_right_triangle(x1, y1, x2, y2):
+    return (x1, x2-x1), (x2, y2), (x1, y2)
+
+
 desired_color = colorWHITE
 
 done = False
@@ -84,7 +88,8 @@ while not done:
                 #pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY), abs(currX-prevX),
                 #                   THICKNESS)
                 #pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
-                pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
+                #pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
+                pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             print("LMB released!")
@@ -95,7 +100,8 @@ while not done:
             #pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY), abs(currX - prevX),
             #                   THICKNESS)
             #pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
-            pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
+            #pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
+            pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
             base_layer.blit(screen, (0, 0))
 
         if event.type == pygame.KEYDOWN:
