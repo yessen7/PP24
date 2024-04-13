@@ -52,7 +52,24 @@ def calculate_square(x1, y1, x2, y2):
 
 
 def calculate_equ_triangle(x1, y1, x2, y2):
-    return (x2, y2), (x1, y2), (x1+abs((x2-x1))/2, y1)
+    if x2 >= x1:
+        zx = x1 + (abs(x2-x1))/2
+    elif x2 < x1:
+        zx = x1 - (abs(x2-x1))/2
+    return (x2, y2), (x1, y2), (zx, y1)
+
+
+def calculate_rhombus(x1, y1, x2, y2):
+    if x2 >= x1:
+        zx = x1 + (abs(x2-x1))/2
+    elif x2 < x1:
+        zx = x1 - (abs(x2-x1))/2
+    if y2 >= y1:
+        zy = y1 + (abs(y2 - y1))/2
+    elif y2 < y1:
+        zy = y1 - (abs(y2 - y1))/2
+
+    return (zx, y1), (x1, zy), (zx, y2), (x2, zy)
 
 
 #def calculate_right_triangle(x1, y1, x2, y2):
@@ -101,7 +118,8 @@ while not done:
                 # THICKNESS)
                 # pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
                 # pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
-                pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
+                # pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
+                # pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             print("LMB released!")
@@ -113,7 +131,8 @@ while not done:
             #                   THICKNESS)
             # pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
             # pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
-            pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
+            # pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
+            # pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
             base_layer.blit(screen, (0, 0))
 
         if event.type == pygame.KEYDOWN:
