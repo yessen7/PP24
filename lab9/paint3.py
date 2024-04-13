@@ -38,7 +38,16 @@ def calculate_center(x1, y1, x2, y2):
 
 
 def calculate_right_triangle(x1, y1, x2, y2):
-    return (x1, y1), (x2, y2), (min(x1, x2), max(y1, y2))
+    if x2 >= x1:
+        zx = min(x1, x2)
+    elif x2 < x1:
+        zx = max(x1, x2)
+    if y2 >= y1:
+        zy = max(y1, y2)
+    elif y2 < y1:
+        zy = min(y1, y2)
+    print(zx, zy)
+    return (x1, y1), (x2, y2), (zx, zy)
 
 
 #def calculate_right_triangle(x1, y1, x2, y2):
@@ -116,7 +125,7 @@ while not done:
                 # pygame.draw.rect(screen, colorRED, calculate_rect(prevX, prevY, currX, currY), THICKNESS)
                 # pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY), abs(currX-prevX),
                 # THICKNESS)
-                # pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
+                pygame.draw.polygon(screen, desired_color, calculate_right_triangle(prevX, prevY, currX, currY), THICKNESS)
                 # pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
                 # pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
                 # pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
@@ -129,7 +138,7 @@ while not done:
             # pygame.draw.rect(screen, colorRED, calculate_rect(prevX, prevY, currX, currY), THICKNESS)
             # pygame.draw.circle(screen, desired_color, calculate_center(prevX, prevY, currX, currY), abs(currX - prevX),
             #                   THICKNESS)
-            # pygame.draw.polygon(screen, desired_color, calculate_triangle(prevX, prevY, currX, currY), THICKNESS)
+            pygame.draw.polygon(screen, desired_color, calculate_right_triangle(prevX, prevY, currX, currY), THICKNESS)
             # pygame.draw.rect(screen, desired_color, calculate_square(prevX, prevY, currX, currY), THICKNESS)
             # pygame.draw.polygon(screen, desired_color, calculate_equ_triangle(prevX, prevY, currX, currY), THICKNESS)
             # pygame.draw.polygon(screen, desired_color, calculate_rhombus(prevX, prevY, currX, currY), THICKNESS)
